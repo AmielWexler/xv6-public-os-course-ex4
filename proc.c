@@ -58,6 +58,7 @@ struct proc*
 myproc(void) {
   struct cpu *c;
   struct proc *p;
+  int ncs; // Number of context switches
   pushcli();
   c = mycpu();
   p = c->proc;
@@ -342,7 +343,7 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
-
+      p->ncs++; // Increment context switch counter
       swtch(&(c->scheduler), p->context);
       switchkvm();
 
